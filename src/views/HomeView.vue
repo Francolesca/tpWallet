@@ -1,18 +1,64 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <h1>¡Bienvenido/a!</h1>
+  <div v-if="Value"> 
+    <div>
+      <h2>Bitcoin</h2>
+      <h3>Compra ${{ btc.totalAsk }}</h3>
+      <h3>Venta ${{ btc.totalBid }}</h3>
+    </div>
+    <div>
+      <h2>Etherum</h2>
+      <h3>Compra ${{ eth.totalAsk }}</h3>
+      <h3>Venta ${{ eth.totalBid }}</h3>
+    </div>
+    <div>
+      <h2>USDC</h2>
+      <h3>Compra ${{ usdc.totalAsk }}</h3>
+      <h3>Venta ${{ usdc.totalBid }}</h3>
+    </div>
   </div>
-</template>
+  <div v-else>
+    Cargando....
+  </div>
+</template>;
+<script>
+import criptoyaApi from '@/services/criptoyaApi';
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+  export default {
+    name: 'HomeView',
+    components:{},
+    data(){
+      return {
+        btc: {},
+        eth: {},
+        usdc: {},
+        user: this.$store.state.id
+      };
+    },
+    created(){
+        criptoyaApi.getBitcoin().then((res) => 
+        {this.btc = res.data});
+        criptoyaApi.getEtherum().then((res) => 
+        {this.eth = res.data});
+        criptoyaApi.getUSDC().then((res) => 
+        {this.usdc = res.data});
+    },
+    computed: {
+      Value: function(){
+      if (this.btc === '' || this.eth === '' || this.usdc === '') return false;
+      else return true;
+    },
+    methods: {
+      // getPrices() {
+      //   criptoyaApi.getBitcoin().then((res) => 
+      //   {this.btc = res.data});
+      //   criptoyaApi.getEtherum().then((res) => 
+      //   {this.eth = res.data});
+      //   criptoyaApi.getUSDC().then((res) => 
+      //   {this.usdc = res.data});
+      // }
+    },
 
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class HomeView extends Vue {}
-</script>
+    }
+  }
+</script>;
