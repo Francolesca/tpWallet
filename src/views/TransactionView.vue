@@ -23,7 +23,11 @@
 
       <label>
         Cantidad:
-        <input type="number" v-model="amount" min="0" step="0.01">
+        <input type="number" 
+          v-model="amount" min="0" 
+          step="0.0000000001" 
+          aria-label="Amount (to the nearest dollar)"
+          placeholder="Ej: 0.00001">
       </label>
 
       <button type="submit">Realizar Operación</button>
@@ -41,11 +45,12 @@ import criptoyaApi from '@/services/criptoyaApi';
 export default{
     data(){
         return {
-        coin: 'btc',
-        action: 'compra',
-        amount: 0,
-        resultadoOperacion: '',
-        datetime:'',
+        action: 'purchase',
+        crypto_code: 'btc',
+        crypto_amount: "0",
+        money:"0",
+        datetime: "",
+        typeOperation: '',
         prices:{
             btc:{},
             eth:{},
@@ -63,6 +68,7 @@ export default{
     },
     methods: {
         realizarOperacion() {
+          datetime = new Date()
         // Aquí puedes implementar la lógica para realizar la compra/venta de criptomonedas
         // Por ahora, simplemente mostraremos un mensaje con los detalles de la operación
         this.resultadoOperacion = `Has realizado una ${this.action} de ${this.amount} ${this.coin}.`;
