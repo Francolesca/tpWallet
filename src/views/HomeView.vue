@@ -1,5 +1,5 @@
 <template>
-  <h1>¡Bienvenido/a!</h1>
+  <h1>¡Bienvenido/a! {{ username }}</h1>
   <div v-if="Value"> 
     <div>
       <h2>Bitcoin</h2>
@@ -32,7 +32,7 @@ import criptoyaApi from '@/services/criptoyaApi';
         btc: {},
         eth: {},
         usdc: {},
-        user: this.$store.state.id
+        username: ''
       };
     },
     created(){
@@ -42,6 +42,7 @@ import criptoyaApi from '@/services/criptoyaApi';
         {this.eth = res.data});
         criptoyaApi.getUSDC().then((res) => 
         {this.usdc = res.data});
+        this.username = localStorage.username;
     },
     computed: {
       Value: function(){

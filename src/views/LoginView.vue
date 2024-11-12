@@ -12,13 +12,14 @@
       <button type="submit">Iniciar sesión</button>
     </div>
     <div>
-      <span>¿No tienes cuenta? <a href="#">Registrate</a></span><br>
-      <span>¿Olvidaste la contraseña? <a href="#">Recupera tu contraseña</a></span>
+<!--       <span>¿No tienes cuenta? <a href="#">Registrate</a></span><br>
+      <span>¿Olvidaste la contraseña? <a href="#">Recupera tu contraseña</a></span> -->
     </div>
   </form>
 </template>
 
 <script>
+import router from '@/router';
 import { RouterLink } from 'vue-router';
 
 export default {
@@ -32,12 +33,15 @@ export default {
     login() {
       if (this.username === "FrancoLescano123"){
       localStorage.username = this.username;
-      localStorage.password = this.password;
-      redirect: to =>
-
+      //localStorage.password = this.password;
+      //redirect: to => "/home"
+        router.replace('/home');
       console.log('Iniciar sesión con:', this.username, this.password);} else { alert("Usuario incorrecto");}
     },
   },
+  mounted() {
+    if(localStorage.username === "FrancoLescano123") router.replace('/home');
+  }
 };
 </script>
 

@@ -1,7 +1,11 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/transaction">Trade</router-link>
+    <router-link to="/home">Home</router-link> |
+    <router-link to="/transaction">Trade</router-link> |
+    <router-link to="/history">History</router-link> |
+    <router-link to="/current">Current Analysis</router-link> |
+    <router-link to="/investment">Investment Analysis</router-link>
+
   </nav>
   <router-view/>
 </template>
