@@ -5,12 +5,12 @@ import TransactionView from '@/views/TransactionView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeView
   },
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: LoginView
   },

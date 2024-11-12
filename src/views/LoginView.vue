@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
   data() {
     return {
@@ -28,7 +30,12 @@ export default {
   },
   methods: {
     login() {
-      console.log('Iniciar sesión con:', this.username, this.password);
+      if (this.username === "FrancoLescano123"){
+      localStorage.username = this.username;
+      localStorage.password = this.password;
+      redirect: to =>
+
+      console.log('Iniciar sesión con:', this.username, this.password);} else { alert("Usuario incorrecto");}
     },
   },
 };
