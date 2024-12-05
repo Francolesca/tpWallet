@@ -10,7 +10,12 @@ const apiClient = axios.create({
 
 export default{
     postTransaction(data){
-        apiClient.post('transaction', data)
-    },
-    
+        apiClient.post('/transactions', data)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+          });
+        }
 }
