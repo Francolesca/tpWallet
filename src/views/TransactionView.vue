@@ -118,7 +118,7 @@ export default{
             user_id: this.username,
             action: this.action,
             crypto_code: this.coin,
-            crypto_amount: this.amount.toString(),
+            crypto_amount: this.crypto_amount.toString(),
             money: this.money,
             datetime: this.datetime,
           }

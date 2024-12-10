@@ -17,5 +17,15 @@ export default{
         .catch(function (error) {
             console.log(error);
           });
+        },
+    getTransaction(userId){
+        return apiClient.get('transactions?q={"user_id": "'+ userId+'"}')
+/*         .then(res =>{
+            console.log(res);
+            return res;
+        })
+        .catch(function (error) {
+            console.log(error);
+            }); */
         }
 }

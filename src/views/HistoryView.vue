@@ -5,19 +5,19 @@
         <div class="panel-body">
          <table class="table table-hover">
          <thead id="tabhead">
-          <th>Transaction ID</th>
-          <th >Date</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <th>Contact</th>
+          <th>Crypto Code</th>
+          <th >Crypto Amount</th>
+          <th>Money</th>
+          <th>Action</th>
+          <th>Date</th>
           </thead>
         <tbody>
-          <tr v-for="tran in transa">
-            <td>{{tran.trans_id}}</td>
-            <td v-if="tran.time != 'Invalid Date'">{{tran.time}}</td>
-            <td>{{tran.type}}</td>
-            <td>{{tran.amount}}</td>
-            <td>{{tran.contact}}</td>
+          <tr v-for="tran in history">
+            <td>{{tran.crypto_code}}</td>
+            <td>{{ tran.crypto_amount }}</td>
+            <td>{{tran.money}}</td>
+            <td>{{tran.action}}</td>
+            <td>{{tran.datetime}}</td>
           </tr>
           </tbody>
         </table>
@@ -25,3 +25,24 @@
       </div>
     </div> 
 </template>
+<script>
+import lab3api from '@/services/lab3api';
+
+export default {
+  name: 'HistoryView',
+  components:{},
+  data(){
+    return{
+    username: localStorage.username,
+    history: {},
+    }
+  },
+  created(){
+    lab3api.getTransaction(this.username).then((res) =>{
+      this.history = res.data;
+    })
+  }
+}
+</script>
+
+
