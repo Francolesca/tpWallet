@@ -23,5 +23,9 @@ export default{
         },
     patchTransaction(id, data){
         apiClient.patch('transactions/'+id, data);
+    },
+    delTransaction(id){
+        apiClient.delete('transactions/'+id);
+        
     }
 }

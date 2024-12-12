@@ -19,7 +19,7 @@
             <td>{{tran.action}}</td>
             <td>{{tran.datetime}}</td>
             <td @click="editTransaction(tran)" class="btn">Edit</td>
-            <td @click="delTransaction(tran)" class="btn">Delete</td>
+            <td @click="delTransaction(tran._id)" class="btn">Delete</td>
           </tr>
           </tbody>
         </table>
@@ -103,7 +103,7 @@ export default {
     cancelEdit(){
       this.selectedTran = {};
       this.showEditForm = false;
-      console.log("cancelado")
+      console.log("canceled")
     },
     updateTran(){
       const id = this.selectedTran._id;
@@ -119,6 +119,11 @@ export default {
       }
       lab3api.patchTransaction(id,data);
       this.showEditForm = false;
+    },
+    delTransaction(id){
+      lab3api.delTransaction(id);
+      alert('Transaction has been deleted: id ' + id);
+      location.reload();
     }
   }
 }
