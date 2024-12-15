@@ -2,7 +2,6 @@
   <div>
     <h1>Compra y Venta de Criptomonedas</h1>
 
-    <!-- Formulario para comprar y vender -->
     <form @submit.prevent="realizarOperacion">
       <label>
         Criptomoneda:
@@ -60,7 +59,6 @@ import moment from 'moment';
 export default{
     data(){
         return {
-        username: localStorage.username,
         action: 'purchase',
         coin: 'btc',
         crypto_amount: 0,
@@ -115,7 +113,7 @@ export default{
           this.datetime = new Date();
           this.datetime = moment(this.datetime).format("DD-MM-YYYY hh:ss");
           let transaction = {
-            user_id: this.username,
+            user_id: localStorage.getItem('user'),
             action: this.action,
             crypto_code: this.coin,
             crypto_amount: this.crypto_amount.toString(),
