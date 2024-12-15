@@ -11,16 +11,12 @@
     <div>
       <button type="submit">Iniciar sesión</button>
     </div>
-    <div>
-<!--       <span>¿No tienes cuenta? <a href="#">Registrate</a></span><br>
-      <span>¿Olvidaste la contraseña? <a href="#">Recupera tu contraseña</a></span> -->
-    </div>
   </form>
 </template>
 
 <script>
 import router from '@/router';
-import { RouterLink } from 'vue-router';
+import { mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -30,19 +26,15 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['setUSer']),
     login() {
-      if (this.username === "FrancoLescano123"){
-      localStorage.username = this.username;
-      //localStorage.password = this.password;
-      //redirect: to => "/home"
+      if (this.username && this.password){
+        this.setUSer(this.username);
         router.replace('/home');
-      console.log('Iniciar sesión con:', this.username, this.password);} else { alert("Usuario incorrecto");}
-    },
-  },
-  mounted() {
-    if(localStorage.username === "FrancoLescano123") router.replace('/home');
+      } else alert('Por favor, complete todos los campos.');
+    }
   }
-};
+}
 </script>
 
 <style scoped>

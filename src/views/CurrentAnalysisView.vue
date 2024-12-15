@@ -74,42 +74,4 @@ export default {
         }
     }
 }
-       /*  calculateData(){
-            const balanceCoins = {};
-
-            this.transactions.forEach(tran => {
-                const {crypto_code, crypto_amount, action} = tran;
-                console.log(JSON.stringify(tran));
-                if (!balanceCoins[crypto_code]) {
-                    balanceCoins[crypto_code] = {amount: 0, money: 0};
-                }
-                if (action === 'purchase') {
-                    balanceCoins[crypto_code].money += parseFloat(crypto_amount);
-                } else if(action === 'sale'){
-                    balanceCoins[crypto_code].money -= parseFloat(crypto_amount);
-                }
-
-                if(crypto_code === 'btc') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.btc.totalbid; 
-                if(crypto_code === 'eth') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.eth.totalbid; 
-                if(crypto_code === 'usdc') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.usdc.totalbid; 
-                
-            })
-            
-            this.currentCoins = Object.keys(balanceCoins)
-                .map(crypto_code => {
-                    const crypto = balanceCoins[crypto_code];
-                    alert(crypto_code);
-                    if(crypto.amount > 0) {
-                        return{
-                            'crypto_code': crypto_code,
-                            'amount': crypto.amount,
-                            'money': crypto.money
-                        }
-                    }
-                    return null;
-                }).filter(coin => coin !== null);
-
-            this.totalMoney = this.currentCoins.reduce((total, coin) => total + parseFloat(coin.money), 0);
-        }, */
-
 </script>
