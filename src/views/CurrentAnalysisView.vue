@@ -10,9 +10,9 @@
         </thead>
         <tbody>
             <tr v-for="crypto in currentCoins" :key="crypto.crypto_code">
-                <td>{{ coin.crypto_code }}</td>
-                <td>{{ coin.amount }}</td>
-                <td>{{ coin.value.toFixed(2) }}</td>                
+                <td>{{ crypto.crypto_code }}</td>
+                <td>{{ crypto.amount.toFixed(2) }}</td>
+                <td>{{ crypto.value.toFixed(2) }}</td>                
             </tr>
         </tbody>
         <h3>{{ totalMoney.toFixed(2) }}</h3>
@@ -39,12 +39,12 @@ export default {
     methods: {
         async fetchTransactions(){
             try {
-                const transacciones = await lab3api.getTransaction(localStorage.getItem(user));
+                const transacciones = await lab3api.getTransaction(localStorage.getItem('user'));
                 
                 const cryptoTotals = transacciones.data.reduce((totals, transaction) => {
-                    const {crypto_code, crypto_amount, action } = transaction;
+                    const { crypto_code, crypto_amount, action } = transaction;
 
-                    if(!totals[crypto_code]) totals[crypto_code = 0];
+                    if(!totals[crypto_code]) totals[crypto_code] = 0;
 
                     totals[crypto_code] += action === 'purchase' ? parseFloat(crypto_amount) : -parseFloat(crypto_amount);
                     
@@ -55,7 +55,7 @@ export default {
 
                 const cryptoPrices = await Promise.all(
                     activeCryptos.map(async ([crypto_code, amount]) => {
-                        const priceResponse = await axios.get('https://criptoya.com/api/satoshitango/${crypto_code}/ars/');
+                        const priceResponse = await axios.get(`https://criptoya.com/api/satoshitango/${crypto_code}/ars/1`);
                         const price = amount * priceResponse.data.totalBid;
                         return {
                             crypto_code,

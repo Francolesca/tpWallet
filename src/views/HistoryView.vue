@@ -82,7 +82,6 @@ export default {
   components:{},
   data(){
     return{
-    username: localStorage.username,
     history: {},
     showEditForm: false,
     selectedTran: {},
@@ -90,7 +89,7 @@ export default {
     }
   },
   created(){
-    lab3api.getTransaction(this.username).then((res) =>{
+    lab3api.getTransaction(localStorage.getItem('user')).then((res) =>{
       this.history = res.data;
     })
   },

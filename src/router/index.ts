@@ -5,6 +5,7 @@ import TransactionView from '@/views/TransactionView.vue'
 import HistoryView from '@/views/HistoryView.vue'
 import CurrentAnalysisView from '@/views/CurrentAnalysisView.vue'
 import InvestmentAnalysisView from '@/views/InvestmentAnalysisView.vue'
+import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,6 +43,15 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const user = store.state.user;
+  if ( to.path !== '/' && !user){
+    next('/');
+  } else {
+    next();
+  }
 })
 
 export default router
