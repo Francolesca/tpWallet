@@ -1,6 +1,6 @@
 <template>
-  <h1>¡Bienvenido/a! {{ user}}</h1>
-  <div v-if="Value"> 
+  <h1>¡Bienvenido/a! {{ user }}</h1>
+  <div v-if="Value">
     <div>
       <h2>Bitcoin</h2>
       <h3>Compra ${{ btc.totalAsk }}</h3>
@@ -20,32 +20,44 @@
   <div v-else>
     Cargando....
   </div>
+  <div>
+    <button @click="logout">Salir</button>
+  </div>
 </template>;
 <script>
+import router from '@/router';
 import criptoyaApi from '@/services/criptoyaApi';
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 
-  export default {
-    name: 'HomeView',
-    components:{},
-    data(){
-      return {
-        btc: {},
-        eth: {},
-        usdc: {},
-      };
-    },
-    created(){
-        criptoyaApi.getBitcoin().then((res) => {this.btc = res.data});
-        criptoyaApi.getEtherum().then((res) => {this.eth = res.data});
-        criptoyaApi.getUSDC().then((res) => {this.usdc = res.data});
-    },
-    computed: {
-      ...mapState(['user']),
-      Value: function(){
+export default {
+  name: 'HomeView',
+  components: {},
+  data() {
+    return {
+      btc: {},
+      eth: {},
+      usdc: {},
+    };
+  },
+  created() {
+    criptoyaApi.getBitcoin().then((res) => { this.btc = res.data });
+    criptoyaApi.getEtherum().then((res) => { this.eth = res.data });
+    criptoyaApi.getUSDC().then((res) => { this.usdc = res.data });
+  },
+  computed: {
+    ...mapState(['user']),
+    Value: function () {
       if (this.btc === '' || this.eth === '' || this.usdc === '') return false;
       else return true;
+    },
+  },
+  methods: {
+    ...mapMutations(['removeUser']),
+    logout() {
+      this.removeUser();
+      router.replace('/');
     }
-    }
-  }
+  },
+}
 </script>;

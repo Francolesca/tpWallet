@@ -5,13 +5,13 @@
     <router-link to="/history">History</router-link> |
     <router-link to="/current">Current Analysis</router-link> |
     <router-link to="/investment">Investment Analysis</router-link>
-
+  
   </nav>
   <router-view/>
 </template>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,5 +30,5 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>

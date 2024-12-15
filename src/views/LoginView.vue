@@ -11,6 +11,10 @@
     <div>
       <button type="submit">Iniciar sesión</button>
     </div>
+    <div>
+<!--       <span>¿No tienes cuenta? <a href="#">Registrate</a></span><br>
+      <span>¿Olvidaste la contraseña? <a href="#">Recupera tu contraseña</a></span> -->
+    </div>
   </form>
 </template>
 
@@ -26,15 +30,17 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['setUSer']),
+    ...mapMutations(['setUser']),
     login() {
-      if (this.username && this.password){
-        this.setUSer(this.username);
+      if (this.username && this.password) {
+        this.setUser(this.username);
         router.replace('/home');
-      } else alert('Por favor, complete todos los campos.');
+      } else {
+        alert('Por favor, complete todos los campos.');
+      }
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
