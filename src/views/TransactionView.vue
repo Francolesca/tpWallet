@@ -1,56 +1,61 @@
 <template>
-  <div>
-    <h1>Compra y Venta de Criptomonedas</h1>
+  <div class="container">
+    <h1 class="title">Compra y Venta de Criptomonedas</h1>
 
-    <form @submit.prevent="realizarOperacion">
-      <label>
-        Criptomoneda:
-        <select v-model="coin" >
-          <option value="btc">Bitcoin</option>
-          <option value="eth">Ethereum</option>
-          <option value="usdc">USDC</option>
-        </select>
-      </label>
-      <br>
-      <label>
-        Tipo de Operación:
-        <select v-model="action">
-          <option value="purchase">Compra</option>
-          <option value="sale">Venta</option>
-        </select>
-      </label>
-      <br>
-      <label v-if="coin === 'btc'">
-        Precio: <span v-if="action === 'purchase'"> ${{ this.criptos.btc.totalAsk}} </span>
-                <span v-else-if="action === 'sale'"> ${{ this.criptos.btc.totalBid}} </span>
-      </label>
-      <label v-if="coin === 'usdc'">
-        Precio: <span v-if="action === 'purchase'"> ${{ this.criptos.usdc.totalAsk}} </span>
-                <span v-else-if="action === 'sale'"> ${{ this.criptos.usdc.totalBid}} </span>
-      </label>
-      <label v-if="coin === 'eth'">
-        Precio: <span v-if="action === 'purchase'"> ${{ this.criptos.eth.totalAsk}} </span>
-                <span v-else-if="action === 'sale'"> ${{ this.criptos.eth.totalBid}} </span>
-      </label>
-      <br>
-      <label>
-        Cantidad:
+    <form @submit.prevent="realizarOperacion" class="transaction-form">
+        <div class="form-group">
+        <label>
+          Criptomoneda:
+          <select v-model="coin" class="form-select">
+            <option value="Bitcoin">Bitcoin</option>
+            <option value="Ethereum">Ethereum</option>
+            <option value="Usdc">USDC</option>
+          </select>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Tipo de Operación:
+          <select v-model="action" class="form-select">
+            <option value="purchase">Compra</option>
+            <option value="sale">Venta</option>
+          </select>
+        </label>
+      </div> 
+
+      <div class="form-group">
+        <label>Precio:</label>
+        <span v-if="coin ==='Bitcoin'">
+          ${{ action === 'purchase' ? this.criptos.btc.totalAsk : this.criptos.btc.totalBid }}
+        </span>
+        <span v-if="coin ==='Ethereum'">
+          ${{ action === 'purchase' ? this.criptos.eth.totalAsk : this.criptos.eth.totalBid }}
+        </span>
+        <span v-if="coin ==='Usdc'">
+          ${{ action === 'purchase' ? this.criptos.usdc.totalAsk : this.criptos.usdc.totalBid }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Cantidad:
+        </label>
         <input type="number" 
           v-model="crypto_amount" min="0" 
           step="0.0000000001" 
-          aria-label="Amount (to the nearest dollar)"
+          id="amount"
+          class="form-input"
           placeholder="Ej: 0.00001">
-      </label>
+      </div>
 
-      <br>
-      <label>Total pesos:{{ totalTransaction }}</label>
-      <br>
+      <div class="form-group">
+        <label>Total Pesos: {{ totalTransaction }}</label>
+      </div>
       
-      <button type="submit">Realizar Operación</button>
+      <button type="submit" class="submit-button">Realizar Operación</button>
     </form>
-    
   </div>
-
 </template>
 <script>
 import criptoyaApi from '@/services/criptoyaApi';
@@ -81,30 +86,24 @@ export default{
     },
     computed: {
       totalTransaction(){
-        if (this.coin == 'btc') {
-          if (this.action == 'purchase') {
-          this.money = (this.crypto_amount * this.criptos.btc.totalAsk).toFixed(2);
-        }
-        if (this.action == 'sale') {
-          this.money = (this.crypto_amount * this.criptos.btc.totalBid).toFixed(2);
-        }
-      }
-      if (this.coin == 'eth') {
-          if (this.action == 'purchase') {
-          this.money = (this.crypto_amount * this.criptos.eth.totalAsk).toFixed(2);
-        }
-        if (this.action == 'sale') {
-          this.money = (this.crypto_amount * this.criptos.eth.totalBid).toFixed(2);
-        }
-      }
-      if (this.coin == 'usdc') {
-          if (this.action == 'purchase') {
-          this.money = (this.crypto_amount * this.criptos.usdc.totalAsk).toFixed(2);
-        }
-        if (this.action == 'sale') {
-          this.money = (this.crypto_amount * this.criptos.usdc.totalBid).toFixed(2);
-        }
-      }
+        const cryptoPrices = {
+            Bitcoin: {
+              purchase: this.criptos.btc.totalAsk,
+              sale: this.criptos.btc.totalBid,
+            },
+            Ethereum: {
+              purchase: this.criptos.eth.totalAsk,
+              sale: this.criptos.eth.totalBid,
+            },
+            Usdc: {
+              purchase: this.criptos.usdc.totalAsk,
+              sale: this.criptos.usdc.totalBid,
+            },
+        };
+
+        const price = cryptoPrices[this.coin]?.[this.action];
+        this.money = price ? (this.crypto_amount * price).toFixed(2) : 0;
+
         return this.money;
       }
     },
@@ -127,3 +126,53 @@ export default{
 };
 
 </script>
+
+<style scoped>
+.transaction-container .container{
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-select, .form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.form-input {
+  width: 90%;
+}
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+</style>

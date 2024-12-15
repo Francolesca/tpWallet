@@ -1,7 +1,7 @@
 <template>
-    <div>
-      <h1>Análisis de Inversiones</h1>
-      <table>
+    <div class="container">
+      <h1 class="panel-heading">Análisis de Inversiones</h1>
+      <table class="table">
         <thead>
           <tr>
             <th>Criptomoneda</th>
@@ -18,7 +18,7 @@
         </tbody>
       </table>
     </div>
-  </template>
+</template>
 <script>
 import lab3api from '@/services/lab3api';
 import axios from 'axios';
@@ -90,3 +90,51 @@ export default {
     }
 }
 </script>
+<style scoped>
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.panel-heading {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.profit {
+  color: #28a745;
+}
+
+.loss {
+  color: #dc3545;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
