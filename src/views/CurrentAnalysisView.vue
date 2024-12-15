@@ -1,6 +1,6 @@
 <template>
     <h1>Current Analysis</h1>
-    <table>
+    <table v-if="currentCoins.length">
         <thead>
             <tr>
                 <th>Crypto</th>
@@ -9,49 +9,72 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(coin, index) in currentCoins" :key="index">
-                <div v-if="coin.amount > 0">
-                    <td>{{ coin.crypto_code }}</td>
-                    <td>{{ coin.amount }}</td>
-                    <td>{{ coin.money.toFixed(2) }}</td>
-                </div>
-                
+            <tr v-for="crypto in currentCoins" :key="crypto.crypto_code">
+                <td>{{ coin.crypto_code }}</td>
+                <td>{{ coin.amount }}</td>
+                <td>{{ coin.value.toFixed(2) }}</td>                
             </tr>
         </tbody>
+        <h3>{{ totalMoney.toFixed(2) }}</h3>
     </table>
-    <h3>{{ totalMoney.toFixed(2) }}</h3>
-    <button @click="calculateData">Refresh</button>
+    <div v-else>
+        Cargando Datos
+    </div>
 </template>
 <script>
-import lab3api from '@/services/lab3api'
-import criptoyaApi from '@/services/criptoyaApi'
+import lab3api from '@/services/lab3api';
+import axios from 'axios';
 
 export default {
     name: 'CurrentAnalysisView',
     data(){
         return{
-            currentCoins: {},
-            transactions: [],
-            criptos: {
-                btc:'',
-                eth:'',
-                usdc:''
-            },
+            currentCoins: [],
             totalMoney: 0
         }
     },
-    created(){
-        this.fetchPrices();
-        this.fethTransactions();
+    async created(){
+        await this.fetchTransactions();
     },
     methods: {
-        async fethTransactions(){
-            lab3api.getTransaction(localStorage.username).then((res) => {
-                this.transactions = res.data;
-            });
-            this.calculateData();
-        },
-        calculateData(){
+        async fetchTransactions(){
+            try {
+                const transacciones = await lab3api.getTransaction(localStorage.getItem(user));
+                
+                const cryptoTotals = transacciones.data.reduce((totals, transaction) => {
+                    const {crypto_code, crypto_amount, action } = transaction;
+
+                    if(!totals[crypto_code]) totals[crypto_code = 0];
+
+                    totals[crypto_code] += action === 'purchase' ? parseFloat(crypto_amount) : -parseFloat(crypto_amount);
+                    
+                    return totals;
+                },{})
+
+                const activeCryptos = Object.entries(cryptoTotals).filter(([,amount]) => amount > 0);
+
+                const cryptoPrices = await Promise.all(
+                    activeCryptos.map(async ([crypto_code, amount]) => {
+                        const priceResponse = await axios.get('https://criptoya.com/api/satoshitango/${crypto_code}/ars/');
+                        const price = amount * priceResponse.data.totalBid;
+                        return {
+                            crypto_code,
+                            amount,
+                            value: price
+                        }
+                    })
+                )
+
+                const totalValue = cryptoPrices.reduce((total, crypto) => total + crypto.value, 0)
+                
+                this.currentCoins = cryptoPrices;
+                this.totalMoney = totalValue;
+            } catch (error) {console.log(error)}
+
+        }
+    }
+}
+       /*  calculateData(){
             const balanceCoins = {};
 
             this.transactions.forEach(tran => {
@@ -69,7 +92,7 @@ export default {
                 if(crypto_code === 'btc') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.btc.totalbid; 
                 if(crypto_code === 'eth') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.eth.totalbid; 
                 if(crypto_code === 'usdc') balanceCoins[crypto_code].money = balanceCoins[crypto_code].amount * this.criptos.usdc.totalbid; 
-
+                
             })
             
             this.currentCoins = Object.keys(balanceCoins)
@@ -87,15 +110,6 @@ export default {
                 }).filter(coin => coin !== null);
 
             this.totalMoney = this.currentCoins.reduce((total, coin) => total + parseFloat(coin.money), 0);
-        },
-        async fetchPrices(){
-            criptoyaApi.getBitcoin().then((res) => 
-            {this.criptos.btc = res.data});
-            criptoyaApi.getEtherum().then((res) => 
-            {this.criptos.eth = res.data});
-            criptoyaApi.getUSDC().then((res) => 
-            {this.criptos.usdc = res.data});
-        }
-    }
-}
+        }, */
+
 </script>
