@@ -13,7 +13,7 @@ export default createStore({
       localStorage.setItem('user', user);
     },
     removeUser(state){
-      state.user = 'user',
+      state.user = '',
       localStorage.removeItem('user');
     }
   }

@@ -17,6 +17,6 @@ export default {
         return apiClient.get('argenbtc/eth/ars/1')
     },
     getUSDC() {
-        return apiClient.get('lemoncash/usdc/ars/1')
+        return apiClient.get('satoshitango/USDC/ars/1')
     }
 }
