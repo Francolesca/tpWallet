@@ -19,14 +19,15 @@
   
   <style scoped>
   .nav-container {
-      padding: 20px;
+      padding: 2px;
       background-color: #ffffff;
       border-bottom: 2px solid #007bff;
+      border-top: 2px solid #007bff;
   }
   
   .navbar {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       align-items: center;
   }
   

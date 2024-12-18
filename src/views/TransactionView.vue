@@ -27,15 +27,6 @@
       <div class="form-group">
         <label>Precio:</label>
         <span>{{ currentPrice }}</span>
-<!--         <span v-if="coin ==='Bitcoin'">
-          ${{ action === 'purchase' ? this.criptos.btc.totalAsk : this.criptos.btc.totalBid }}
-        </span>
-        <span v-if="coin ==='Ethereum'">
-          ${{ action === 'purchase' ? this.criptos.eth.totalAsk : this.criptos.eth.totalBid }}
-        </span>
-        <span v-if="coin ==='Usdc'">
-          ${{ action === 'purchase' ? this.criptos.usdc.totalAsk : this.criptos.usdc.totalBid }}
-        </span> -->
       </div>
 
       <div class="form-group">
@@ -75,7 +66,8 @@ export default{
             btc:'',
             eth:'',
             usdc:'',
-        }
+        },
+        availableAmount: 0
       }
     },
     created(){
@@ -100,14 +92,12 @@ export default{
       }
     },
     methods: {
-        realizarOperacion() {
-          if(!this.money || this.money === '0'){alert('No se ha calculado el valor total, verifica los datos.'); return;}
+        async realizarOperacion() {
 
 /*           this.datetime = new Date();
           this.datetime = moment().format("DD-MM-YYYY hh:ss"); */
           let fechaactual = moment().toISOString();
-          alert(fechaactual);
-          
+
           this.transaction = {
             user_id: localStorage.getItem('user'),
             action: this.action,
@@ -125,7 +115,7 @@ export default{
           } 
 
         },
-    }
+      }
 };
 
 </script>

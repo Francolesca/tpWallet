@@ -1,4 +1,5 @@
 <template id="app">
+  <h1>Proyecto Final CryptoWallet</h1>
   <div id="app">
     <NavBar />
     <router-view />
@@ -22,5 +23,11 @@ export default {
     color: #000000; 
     min-height: 100vh; 
     font-family: Arial, sans-serif;
+}
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 }
 </style>

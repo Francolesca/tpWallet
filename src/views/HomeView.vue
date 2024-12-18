@@ -78,7 +78,7 @@ export default {
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px;
   font-family: Arial, sans-serif;
 }
 
