@@ -2,7 +2,7 @@
     <div class="container">
         <div class="panel">
             <div class="panel-heading">
-                <h1>Current Analysis</h1>
+                <h1>Análisis Actual</h1>
             </div>
             <table class="table" v-if="currentCoins.length">
                 <thead>

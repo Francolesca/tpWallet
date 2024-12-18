@@ -78,9 +78,10 @@ export default {
   },
   created(){
     lab3api.getTransaction(localStorage.getItem('user')).then((res) =>{
-      this.history = res.data;
+      this.history = res.data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
     })
   },
+
   methods: {
     editTransaction(tran){
       this.selectedTran = tran;

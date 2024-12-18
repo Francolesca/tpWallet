@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <h1 class="title">Compra y Venta de Criptomonedas</h1>
+    <h1 class="title">Compra y Venta de Cryptos</h1>
 
     <form @submit.prevent="realizarOperacion" class="transaction-form">
         <div class="form-group">
         <label>
           Criptomoneda:
           <select v-model="coin" class="form-select">
-            <option value="Bitcoin">Bitcoin</option>
-            <option value="Ethereum">Ethereum</option>
-            <option value="Usdc">USDC</option>
+            <option value="btc">Bitcoin</option>
+            <option value="eth">Ethereum</option>
+            <option value="usdc">USDC</option>
           </select>
         </label>
       </div>
@@ -26,7 +26,8 @@
 
       <div class="form-group">
         <label>Precio:</label>
-        <span v-if="coin ==='Bitcoin'">
+        <span>{{ currentPrice }}</span>
+<!--         <span v-if="coin ==='Bitcoin'">
           ${{ action === 'purchase' ? this.criptos.btc.totalAsk : this.criptos.btc.totalBid }}
         </span>
         <span v-if="coin ==='Ethereum'">
@@ -34,7 +35,7 @@
         </span>
         <span v-if="coin ==='Usdc'">
           ${{ action === 'purchase' ? this.criptos.usdc.totalAsk : this.criptos.usdc.totalBid }}
-        </span>
+        </span> -->
       </div>
 
       <div class="form-group">
@@ -61,6 +62,7 @@
 import criptoyaApi from '@/services/criptoyaApi';
 import lab3api from '@/services/lab3api';
 import moment from 'moment';
+
 export default{
     data(){
         return {
@@ -68,7 +70,7 @@ export default{
         coin: 'btc',
         crypto_amount: 0,
         money: '0',
-        datetime: '',
+        transaction: {},
         criptos:{
             btc:'',
             eth:'',
@@ -78,30 +80,20 @@ export default{
     },
     created(){
         criptoyaApi.getBitcoin().then((res) => 
-        {this.criptos.btc = res.data});
+        {this.criptos.btc = res.data}).catch((error) => {console.log('Error al obtener el precio de Bitcoin.', error)});
         criptoyaApi.getEtherum().then((res) => 
-        {this.criptos.eth = res.data});
+        {this.criptos.eth = res.data}).catch((error) => {console.log('Erro al obtener el precio de Ethereum.',error)});
         criptoyaApi.getUSDC().then((res) => 
-        {this.criptos.usdc = res.data});
+        {this.criptos.usdc = res.data}).catch((error) => {console.log('Error al obtener el precio de Usdc.',error)});
     },
     computed: {
+      currentPrice(){
+        const price = this.criptos[this.coin]?.[this.action === 'purchase' ? 'totalAsk' : 'totalBid'];
+        return price ? `$${price}` : 'N/A';
+      },
       totalTransaction(){
-        const cryptoPrices = {
-            Bitcoin: {
-              purchase: this.criptos.btc.totalAsk,
-              sale: this.criptos.btc.totalBid,
-            },
-            Ethereum: {
-              purchase: this.criptos.eth.totalAsk,
-              sale: this.criptos.eth.totalBid,
-            },
-            Usdc: {
-              purchase: this.criptos.usdc.totalAsk,
-              sale: this.criptos.usdc.totalBid,
-            },
-        };
+        const price = this.criptos[this.coin]?.[this.action === 'purchase' ? 'totalAsk' : 'totalBid'];
 
-        const price = cryptoPrices[this.coin]?.[this.action];
         this.money = price ? (this.crypto_amount * price).toFixed(2) : 0;
 
         return this.money;
@@ -109,18 +101,29 @@ export default{
     },
     methods: {
         realizarOperacion() {
-          this.datetime = new Date();
-          this.datetime = moment(this.datetime).format("DD-MM-YYYY hh:ss");
-          let transaction = {
+          if(!this.money || this.money === '0'){alert('No se ha calculado el valor total, verifica los datos.'); return;}
+
+/*           this.datetime = new Date();
+          this.datetime = moment().format("DD-MM-YYYY hh:ss"); */
+          let fechaactual = moment().toISOString();
+          alert(fechaactual);
+          
+          this.transaction = {
             user_id: localStorage.getItem('user'),
             action: this.action,
             crypto_code: this.coin,
-            crypto_amount: this.crypto_amount.toString(),
+            crypto_amount: this.crypto_amount,
             money: this.money,
-            datetime: this.datetime,
+            datetime: fechaactual,
           }
-          lab3api.postTransaction(transaction);
-          console.log(transaction);
+
+          try {
+            lab3api.postTransaction(this.transaction);
+            console.log('Realizado con exito', this.transaction);
+          } catch (error) {
+            console.log(error);
+          } 
+
         },
     }
 };
