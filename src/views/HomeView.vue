@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="welcome">¡Bienvenido/a! {{ user }}</h1>
     <div v-if="Value" class="crypto-container">
-      <div class="crypto-card" v-for="(crypto, index) in cryptos" :key="index">
+      <div class="crypto-card" v-for="crypto in cryptos" :key="crypto.name">
         <h2>{{ crypto.name }}</h2>
         <h3>Compra: ${{ crypto.totalAsk }}</h3>
         <h3>Venta: ${{ crypto.totalBid }}</h3>

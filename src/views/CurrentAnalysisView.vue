@@ -1,9 +1,7 @@
 <template>
     <div class="container">
         <div class="panel">
-            <div class="panel-heading">
-                <h1>Análisis Actual</h1>
-            </div>
+            <div class="panel-heading">Análisis Actual</div>
             <table class="table" v-if="currentCoins.length">
                 <thead>
                     <tr>
@@ -90,7 +88,6 @@ export default {
 }
 
 .panel {
-  border: 1px solid #007bff;
   border-radius: 8px;
   margin-bottom: 20px;
 }

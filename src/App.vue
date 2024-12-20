@@ -1,5 +1,5 @@
 <template id="app">
-  <h1>Proyecto Final CryptoWallet</h1>
+  <h1>Trabajo Final CryptoWallet</h1>
   <div id="app">
     <NavBar />
     <router-view />

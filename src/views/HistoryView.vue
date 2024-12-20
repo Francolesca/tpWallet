@@ -37,20 +37,23 @@
       <h3>Editar Transacción</h3>
       <form @submit.prevent="updateTran">
         <div class="form-group">
-          <label for="crypto_code">Crypto</label>
+          <label for="crypto_code">Código  :</label>
           <input type="text" v-model="selectedTranEdit.crypto_code" id="crypto_code" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="crypto_amount">Cantidad</label>
+          <label for="crypto_amount">Cantidad:</label>
           <input type="text" v-model="selectedTranEdit.crypto_amount" id="crypto_amount" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="money">Dinero</label>
+          <label for="money">Dinero  :</label>
           <input type="text" v-model="selectedTranEdit.money" id="money" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="action">Acción</label>
-          <input type="text" v-model="selectedTranEdit.action" id="action" class="form-control" />
+          <label for="action">Acción  :</label>
+          <select v-model="selectedTran.action" id="action" class="form-control">
+            <option value="purchase">Compra</option>
+            <option value="sale">Venta</option>
+          </select>
         </div>
         <div>
           <button type="submit" class="btn btn-primary">Aceptar</button>
@@ -77,9 +80,7 @@ export default {
     }
   },
   created(){
-    lab3api.getTransaction(localStorage.getItem('user')).then((res) =>{
-      this.history = res.data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    })
+    this.getTransacciones();
   },
 
   methods: {
@@ -105,6 +106,9 @@ export default {
       if (this.selectedTran.money != this.selectedTranEdit.money && this.selectedTranEdit.money!= '') {
         data.money = this.selectedTranEdit.crypto_code;
       }
+      if (this.selectedTran.action != this.selectedTranEdit.money) {
+        data.action = this.selectedTranEdit.action;
+      }
       lab3api.patchTransaction(id,data);
       this.showEditForm = false;
     },
@@ -112,6 +116,11 @@ export default {
       lab3api.delTransaction(id);
       alert('Transaction has been deleted: id ' + id);
       location.reload();
+    },
+    getTransacciones(){
+      lab3api.getTransaction(localStorage.getItem('user')).then((res) =>{
+      this.history = res.data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+      })
     }
   }
 }
@@ -125,7 +134,6 @@ export default {
 }
 
 .panel {
-  border: 1px solid #007bff;
   border-radius: 8px;
   margin-bottom: 20px;
 }
@@ -137,6 +145,7 @@ export default {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   font-size: 1.5em;
+  text-align: center;
 }
 
 .table {
@@ -148,6 +157,11 @@ export default {
 .table th, .table td {
   padding: 10px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f2f2f2;
 }
 
 .table-hover tbody tr:hover {
