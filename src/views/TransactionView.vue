@@ -2,49 +2,39 @@
   <div class="container">
     <h1 class="title">Compra y Venta de Cryptos</h1>
 
-    <form @submit.prevent="realizarOperacion" class="transaction-form">
-        <div class="form-group">
-        <label>
-          Criptomoneda:
-          <select v-model="coin" class="form-select">
+    <form @submit.prevent="realizarOperacion" class="transaction-form" id="form">
+      <div class="form-group">
+        <label for="coin">Crypto:</label>
+          <select v-model="coin" class="form-select" id="coin">
             <option value="btc">Bitcoin</option>
             <option value="eth">Ethereum</option>
             <option value="usdc">USDC</option>
           </select>
-        </label>
       </div>
 
       <div>
-        <label>
-          Tipo de Operación:
-          <select v-model="action" class="form-select">
+        <label for="action">Acción:</label>
+          <select v-model="action" class="form-select" id="action">
             <option value="purchase">Compra</option>
             <option value="sale">Venta</option>
           </select>
-        </label>
-      </div> 
-
-      <div class="form-group">
-        <label>Precio:</label>
-        <span>{{ currentPrice }}</span>
       </div>
 
       <div class="form-group">
-        <label>
-          Cantidad:
-        </label>
-        <input type="number" 
-          v-model="crypto_amount" min="0" 
-          step="0.0000000001" 
-          id="amount"
-          class="form-input"
+        <label for="price">Precio:</label>
+        <span id="price">{{ currentPrice }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Cantidad:</label>
+        <input type="number" v-model="crypto_amount" min="0" step="0.0000000001" id="amount" class="form-input"
           placeholder="Ej: 0.00001">
       </div>
 
       <div class="form-group">
         <label>Total Pesos: {{ totalTransaction }}</label>
       </div>
-      
+
       <button type="submit" class="submit-button">Realizar Operación</button>
     </form>
   </div>
@@ -108,8 +98,13 @@ export default{
           }
 
           try {
-            lab3api.postTransaction(this.transaction);
+            await lab3api.postTransaction(this.transaction);
             console.log('Realizado con exito', this.transaction);
+            alert('Realizado con éxito');
+            this.action = 'purchase';
+            this.coin = 'btc';
+            this.crypto_amount = 0;
+            this.money = '0';
           } catch (error) {
             console.log(error);
           } 
@@ -121,8 +116,8 @@ export default{
 </script>
 
 <style scoped>
-.transaction-container .container{
-  max-width: 600px;
+.container {
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -143,7 +138,7 @@ export default{
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-select, .form-input {
@@ -153,7 +148,7 @@ export default{
   border-radius: 5px;
 }
 .form-input {
-  width: 90%;
+  width: 97%;
 }
 .submit-button {
   background-color: #007bff;

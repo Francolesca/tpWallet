@@ -32,8 +32,7 @@ export default {
       if (this.username && this.password) {
         this.setUser(this.username);
         router.replace('/home');
-      } else {
-        alert('Por favor, complete todos los campos.');
+        return localStorage.getItem('user');
       }
     }
   },

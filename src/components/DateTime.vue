@@ -28,7 +28,3 @@
   };
   </script>
   
-  <style scoped>
-  /* Estilos si es necesario */
-  </style>
-  
